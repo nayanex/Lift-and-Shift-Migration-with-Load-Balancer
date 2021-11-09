@@ -1,0 +1,23 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - nginx
+write_files:
+  - owner: www-data:www-data
+    path: /etc/nginx/sites-available/default
+    content: |
+      server {
+       listen 80;
+       listen [::]:80;
+
+       server_name example.ubuntu.com;
+
+       root /home/book_admin/web;
+       index index.html;
+
+       location / {
+               try_files $uri $uri/ =404;
+       }
+      }
+runcmd:
+  - service nginx restart
